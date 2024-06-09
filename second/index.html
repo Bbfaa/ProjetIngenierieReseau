@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Outil de Dimensionnement UMTS</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 50%; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; }
+        input { width: 100%; padding: 8px; }
+        button { padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Outil de Dimensionnement UMTS</h1>
+        <form id="formulaire-dimensionnement">
+            <div class="form-group">
+                <label for="surface">Surface (km²) :</label>
+                <input type="number" id="surface" name="surface" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="abonnes">Nombre d'abonnés :</label>
+                <input type="number" id="abonnes" name="abonnes" required>
+            </div>
+            <div class="form-group">
+                <label for="trafic">Trafic moyen par abonné (Erlang) :</label>
+                <input type="number" id="trafic" name="trafic" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="qos">Qualité de service (%) :</label>
+                <input type="number" id="qos" name="qos" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="cout_par_station">Coût par station de base ($) :</label>
+                <input type="number" id="cout_par_station" name="cout_par_station" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="capacite_par_station">Capacité par station de base (Erlang) :</label>
+                <input type="number" id="capacite_par_station" name="capacite_par_station" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="couverture_par_station">Couverture par station de base (km²) :</label>
+                <input type="number" id="couverture_par_station" name="couverture_par_station" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="canaux_par_station">Nombre de canaux par station :</label>
+                <input type="number" id="canaux_par_station" name="canaux_par_station" step="1" required>
+            </div>
+            <div class="form-group">
+                <label for="repartition_frequence">Répartition des fréquences :</label>
+                <input type="number" id="repartition_frequence" name="repartition_frequence" step="1" required>
+            </div>
+            <button type="submit">Calculer</button>
+        </form>
+        <div id="resultats"></div>
+    </div>
+    <script>
+        document.getElementById('formulaire-dimensionnement').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = {
+                surface: parseFloat(document.getElementById('surface').value),
+                abonnes: parseInt(document.getElementById('abonnes').value),
+                trafic: parseFloat(document.getElementById('trafic').value),
+                qos: parseFloat(document.getElementById('qos').value),
+                cout_par_station: parseFloat(document.getElementById('cout_par_station').value),
+                capacite_par_station: parseFloat(document.getElementById('capacite_par_station').value),
+                couverture_par_station: parseFloat(document.getElementById('couverture_par_station').value),
+                canaux_par_station: parseInt(document.getElementById('canaux_par_station').value),
+                repartition_frequence: parseInt(document.getElementById('repartition_frequence').value)
+            };
+
+            fetch('/dimensionnement', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur de réception des données');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('resultats').innerHTML = `
+                    <h2>Résultats du Dimensionnement</h2>
+                    <p>Stations de base requises : ${data.stationsBase}</p>
+                    <p>Capacité totale (Erlang) : ${data.capaciteTotale}</p>
+                    <p>Coût total ($) : ${data.coutTotal}</p>
+                    <p>Canaux nécessaires : ${data.canauxNecessaires}</p>
+                    <p>Fréquences nécessaires : ${data.frequencesNecessaires}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                document.getElementById('resultats').innerHTML = '<p>Une erreur est survenue lors du calcul.</p>';
+            });
+        });
+    </script>
+</body>
+</html>
