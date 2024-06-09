@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outil de Dimensionnement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <h3 class="center-align">Outil de Dimensionnement UMTS</h3>
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="num_abonnes" type="number" class="validate">
+                        <label for="num_abonnes">Nombre d'abonnés</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="taux_congestion" type="number" class="validate">
+                        <label for="taux_congestion">Taux de Congestion (%)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="capacite_it" type="number" class="validate">
+                        <label for="capacite_it">Capacité par IT (Erlangs)</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="porteuses_cellule" type="number" class="validate">
+                        <label for="porteuses_cellule">Nombre de porteuses par cellule</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="its_tch" type="number" class="validate">
+                        <label for="its_tch">Nombre d'ITs TCH</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="erlangs_it" type="number" class="validate">
+                        <label for="erlangs_it">Erlangs par IT</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="secteurs_site" type="number" class="validate">
+                        <label for="secteurs_site">Nombre de secteurs par site</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="augmentation_trafic" type="number" class="validate">
+                        <label for="augmentation_trafic">Augmentation du trafic (%)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <button class="btn waves-effect waves-light" type="button" id="calculate">Calculer
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <h5>Résultats</h5>
+                <p id="resultat"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
